@@ -116,7 +116,7 @@
 
 	// to configure GetSchemaOptions properties, add them here, before load metadata call
 
-	LoadSqlServerMetadata("MSI\\SQLEXPRESS", "PV_ProyectoFinal");
+	LoadSqlServerMetadata("MSI\\SQLEXPRESS", "PVI_ProyectoFinal");
 
 
 //	LoadSqlServerMetadata(".", "MyDatabase"); // Integrated Security

@@ -21,39 +21,41 @@ using LinqToDB.Mapping;
 namespace DataModels
 {
 	/// <summary>
-	/// Database       : PV_ProyectoFinal
+	/// Database       : PVI_ProyectoFinal
 	/// Data Source    : MSI\SQLEXPRESS
 	/// Server Version : 14.00.1000
 	/// </summary>
-	public partial class PvProyectoFinalDB : LinqToDB.Data.DataConnection
+	public partial class PviProyectoFinalDB : LinqToDB.Data.DataConnection
 	{
-		public ITable<Bitacora>    Bitacoras    { get { return this.GetTable<Bitacora>(); } }
-		public ITable<Habitacion>  Habitacions  { get { return this.GetTable<Habitacion>(); } }
-		public ITable<Hotel>       Hotels       { get { return this.GetTable<Hotel>(); } }
-		public ITable<Persona>     Personas     { get { return this.GetTable<Persona>(); } }
-		public ITable<Reservacion> Reservacions { get { return this.GetTable<Reservacion>(); } }
+		public ITable<Bitacora>     Bitacoras      { get { return this.GetTable<Bitacora>(); } }
+		public ITable<Casa>         Casas          { get { return this.GetTable<Casa>(); } }
+		public ITable<Categoria>    Categorias     { get { return this.GetTable<Categoria>(); } }
+		public ITable<Cobro>        Cobros         { get { return this.GetTable<Cobro>(); } }
+		public ITable<DetalleCobro> DetalleCobroes { get { return this.GetTable<DetalleCobro>(); } }
+		public ITable<Persona>      Personas       { get { return this.GetTable<Persona>(); } }
+		public ITable<Servicio>     Servicios      { get { return this.GetTable<Servicio>(); } }
 
-		public PvProyectoFinalDB()
+		public PviProyectoFinalDB()
 		{
 			InitDataContext();
 			InitMappingSchema();
 		}
 
-		public PvProyectoFinalDB(string configuration)
+		public PviProyectoFinalDB(string configuration)
 			: base(configuration)
 		{
 			InitDataContext();
 			InitMappingSchema();
 		}
 
-		public PvProyectoFinalDB(DataOptions options)
+		public PviProyectoFinalDB(DataOptions options)
 			: base(options)
 		{
 			InitDataContext();
 			InitMappingSchema();
 		}
 
-		public PvProyectoFinalDB(DataOptions<PvProyectoFinalDB> options)
+		public PviProyectoFinalDB(DataOptions<PviProyectoFinalDB> options)
 			: base(options.Options)
 		{
 			InitDataContext();
@@ -67,72 +69,193 @@ namespace DataModels
 	[Table(Schema="dbo", Name="Bitacora")]
 	public partial class Bitacora
 	{
-		[Column("idBitacora"),      PrimaryKey, Identity] public int      IdBitacora      { get; set; } // int
-		[Column("idReservacion"),   NotNull             ] public int      IdReservacion   { get; set; } // int
-		[Column("idPersona"),       NotNull             ] public int      IdPersona       { get; set; } // int
-		[Column("accionRealizada"), NotNull             ] public string   AccionRealizada { get; set; } // varchar(25)
-		[Column("fechaDeLaAccion"), NotNull             ] public DateTime FechaDeLaAccion { get; set; } // datetime
+		[Column("id_bitacora"), PrimaryKey, Identity] public int      IdBitacora { get; set; } // int
+		[Column("detalle"),     NotNull             ] public string   Detalle    { get; set; } // text
+		[Column("id_casa"),     NotNull             ] public int      IdCasa     { get; set; } // int
+		[Column("id_user"),     NotNull             ] public int      IdUser     { get; set; } // int
+		[Column("fecha"),       NotNull             ] public DateTime Fecha      { get; set; } // date
 
 		#region Associations
 
 		/// <summary>
-		/// FK_Bitacora_Persona (dbo.Persona)
+		/// FK__Cobros__id_bitac__48CFD27E_BackReference (dbo.Cobros)
 		/// </summary>
-		[Association(ThisKey="IdPersona", OtherKey="IdPersona", CanBeNull=false)]
-		public Persona Persona { get; set; }
+		[Association(ThisKey="IdBitacora", OtherKey="IdBitacora", CanBeNull=true)]
+		public IEnumerable<Cobro> Cobrosidbitac48CFD27E { get; set; }
 
 		/// <summary>
-		/// FK_Bitacora_Reservacion (dbo.Reservacion)
+		/// FK__Cobros__id_bitac__6477ECF3_BackReference (dbo.Cobros)
 		/// </summary>
-		[Association(ThisKey="IdReservacion", OtherKey="IdReservacion", CanBeNull=false)]
-		public Reservacion Reservacion { get; set; }
+		[Association(ThisKey="IdBitacora", OtherKey="IdBitacora", CanBeNull=true)]
+		public IEnumerable<Cobro> Cobrosidbitac6477Ecfs { get; set; }
+
+		/// <summary>
+		/// FK__Bitacora__id_cas__4BAC3F29 (dbo.Casas)
+		/// </summary>
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=false)]
+		public Casa Idcas4BAC3F { get; set; }
+
+		/// <summary>
+		/// FK__Bitacora__id_cas__6754599E (dbo.Casas)
+		/// </summary>
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=false)]
+		public Casa Idcas6754599E { get; set; }
 
 		#endregion
 	}
 
-	[Table(Schema="dbo", Name="Habitacion")]
-	public partial class Habitacion
+	[Table(Schema="dbo", Name="Casas")]
+	public partial class Casa
 	{
-		[Column("idHabitacion"),     PrimaryKey, Identity] public int    IdHabitacion     { get; set; } // int
-		[Column("idHotel"),          NotNull             ] public int    IdHotel          { get; set; } // int
-		[Column("numeroHabitacion"), NotNull             ] public string NumeroHabitacion { get; set; } // varchar(10)
-		[Column("capacidadMaxima"),  NotNull             ] public int    CapacidadMaxima  { get; set; } // int
-		[Column("descripcion"),      NotNull             ] public string Descripcion      { get; set; } // varchar(500)
-		[Column("estado"),           NotNull             ] public char   Estado           { get; set; } // varchar(1)
+		[Column("id_casa"),             PrimaryKey, Identity] public int      IdCasa             { get; set; } // int
+		[Column("nombre_casa"),         NotNull             ] public string   NombreCasa         { get; set; } // text
+		[Column("metros_cuadrados"),    NotNull             ] public decimal  MetrosCuadrados    { get; set; } // decimal(10, 2)
+		[Column("numero_habitantes"),   NotNull             ] public int      NumeroHabitantes   { get; set; } // int
+		[Column("numero_habitaciones"), NotNull             ] public int      NumeroHabitaciones { get; set; } // int
+		[Column("numero_banos"),        NotNull             ] public int      NumeroBanos        { get; set; } // int
+		[Column("precio"),              NotNull             ] public decimal  Precio             { get; set; } // decimal(18, 0)
+		[Column("id_persona"),          NotNull             ] public int      IdPersona          { get; set; } // int
+		[Column("Fecha_construccion"),  NotNull             ] public DateTime FechaConstruccion  { get; set; } // date
+		[Column("estado"),              NotNull             ] public bool     Estado             { get; set; } // bit
 
 		#region Associations
 
 		/// <summary>
-		/// FK_Habitacion_Hotel (dbo.Hotel)
+		/// FK__Bitacora__id_cas__4BAC3F29_BackReference (dbo.Bitacora)
 		/// </summary>
-		[Association(ThisKey="IdHotel", OtherKey="IdHotel", CanBeNull=false)]
-		public Hotel Hotel { get; set; }
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=true)]
+		public IEnumerable<Bitacora> Bitacoraidcas4BAC3F { get; set; }
 
 		/// <summary>
-		/// FK_Reservacion_Habitacion_BackReference (dbo.Reservacion)
+		/// FK__Bitacora__id_cas__6754599E_BackReference (dbo.Bitacora)
 		/// </summary>
-		[Association(ThisKey="IdHabitacion", OtherKey="IdHabitacion", CanBeNull=true)]
-		public IEnumerable<Reservacion> Reservacions { get; set; }
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=true)]
+		public IEnumerable<Bitacora> Bitacoraidcas6754599E { get; set; }
+
+		/// <summary>
+		/// FK__Cobros__id_casa__47DBAE45_BackReference (dbo.Cobros)
+		/// </summary>
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=true)]
+		public IEnumerable<Cobro> Cobrosidcasa47Dbaes { get; set; }
+
+		/// <summary>
+		/// FK__Cobros__id_casa__6383C8BA_BackReference (dbo.Cobros)
+		/// </summary>
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=true)]
+		public IEnumerable<Cobro> Cobrosidcasa6383C8Bas { get; set; }
 
 		#endregion
 	}
 
-	[Table(Schema="dbo", Name="Hotel")]
-	public partial class Hotel
+	[Table(Schema="dbo", Name="Categorias")]
+	public partial class Categoria
 	{
-		[Column("idHotel"),            PrimaryKey,  Identity] public int     IdHotel            { get; set; } // int
-		[Column("nombre"),             NotNull              ] public string  Nombre             { get; set; } // varchar(150)
-		[Column("direccion"),             Nullable          ] public string  Direccion          { get; set; } // varchar(500)
-		[Column("costoPorCadaAdulto"), NotNull              ] public decimal CostoPorCadaAdulto { get; set; } // numeric(10, 2)
-		[Column("costoPorCadaNinho"),  NotNull              ] public decimal CostoPorCadaNinho  { get; set; } // numeric(10, 2)
+		[Column("id_categoria"), PrimaryKey,  Identity] public int    IdCategoria { get; set; } // int
+		[Column("nombre"),       NotNull              ] public string Nombre      { get; set; } // varchar(100)
+		[Column("descripcion"),     Nullable          ] public string Descripcion { get; set; } // text
+		[Column("estado"),       NotNull              ] public bool   Estado      { get; set; } // bit
 
 		#region Associations
 
 		/// <summary>
-		/// FK_Habitacion_Hotel_BackReference (dbo.Habitacion)
+		/// FK__Servicios__id_ca__46E78A0C_BackReference (dbo.Servicios)
 		/// </summary>
-		[Association(ThisKey="IdHotel", OtherKey="IdHotel", CanBeNull=true)]
-		public IEnumerable<Habitacion> Habitacions { get; set; }
+		[Association(ThisKey="IdCategoria", OtherKey="IdCategoria", CanBeNull=true)]
+		public IEnumerable<Servicio> Serviciosidca46E78A0C { get; set; }
+
+		/// <summary>
+		/// FK__Servicios__id_ca__628FA481_BackReference (dbo.Servicios)
+		/// </summary>
+		[Association(ThisKey="IdCategoria", OtherKey="IdCategoria", CanBeNull=true)]
+		public IEnumerable<Servicio> Serviciosidca628Fas { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="dbo", Name="Cobros")]
+	public partial class Cobro
+	{
+		[Column("id_cobro"),     PrimaryKey,  Identity] public int       IdCobro     { get; set; } // int
+		[Column("id_casa"),      NotNull              ] public int       IdCasa      { get; set; } // int
+		[Column("mes"),          NotNull              ] public int       Mes         { get; set; } // int
+		[Column("anno"),         NotNull              ] public int       Anno        { get; set; } // int
+		[Column("id_bitacora"),  NotNull              ] public int       IdBitacora  { get; set; } // int
+		[Column("estado"),       NotNull              ] public bool      Estado      { get; set; } // bit
+		[Column("monto"),        NotNull              ] public decimal   Monto       { get; set; } // decimal(10, 2)
+		[Column("fecha_pagada"),    Nullable          ] public DateTime? FechaPagada { get; set; } // date
+
+		#region Associations
+
+		/// <summary>
+		/// FK__DetalleCo__id_co__4AB81AF0_BackReference (dbo.DetalleCobro)
+		/// </summary>
+		[Association(ThisKey="IdCobro", OtherKey="IdCobro", CanBeNull=true)]
+		public IEnumerable<DetalleCobro> DetalleCoidco4AB81Afs { get; set; }
+
+		/// <summary>
+		/// FK__DetalleCo__id_co__66603565_BackReference (dbo.DetalleCobro)
+		/// </summary>
+		[Association(ThisKey="IdCobro", OtherKey="IdCobro", CanBeNull=true)]
+		public IEnumerable<DetalleCobro> DetalleCoidcoes { get; set; }
+
+		/// <summary>
+		/// FK__Cobros__id_bitac__48CFD27E (dbo.Bitacora)
+		/// </summary>
+		[Association(ThisKey="IdBitacora", OtherKey="IdBitacora", CanBeNull=false)]
+		public Bitacora Idbitac48CFD27E { get; set; }
+
+		/// <summary>
+		/// FK__Cobros__id_bitac__6477ECF3 (dbo.Bitacora)
+		/// </summary>
+		[Association(ThisKey="IdBitacora", OtherKey="IdBitacora", CanBeNull=false)]
+		public Bitacora Idbitac6477ECF { get; set; }
+
+		/// <summary>
+		/// FK__Cobros__id_casa__47DBAE45 (dbo.Casas)
+		/// </summary>
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=false)]
+		public Casa Idcasa47DBAE { get; set; }
+
+		/// <summary>
+		/// FK__Cobros__id_casa__6383C8BA (dbo.Casas)
+		/// </summary>
+		[Association(ThisKey="IdCasa", OtherKey="IdCasa", CanBeNull=false)]
+		public Casa Idcasa6383C8BA { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="dbo", Name="DetalleCobro")]
+	public partial class DetalleCobro
+	{
+		[Column("id_servicio"), PrimaryKey(1), NotNull] public int IdServicio { get; set; } // int
+		[Column("id_cobro"),    PrimaryKey(2), NotNull] public int IdCobro    { get; set; } // int
+
+		#region Associations
+
+		/// <summary>
+		/// FK__DetalleCo__id_co__66603565 (dbo.Cobros)
+		/// </summary>
+		[Association(ThisKey="IdCobro", OtherKey="IdCobro", CanBeNull=false)]
+		public Cobro DetalleCoidco { get; set; }
+
+		/// <summary>
+		/// FK__DetalleCo__id_co__4AB81AF0 (dbo.Cobros)
+		/// </summary>
+		[Association(ThisKey="IdCobro", OtherKey="IdCobro", CanBeNull=false)]
+		public Cobro DetalleCoidco4AB81AF { get; set; }
+
+		/// <summary>
+		/// FK__DetalleCo__id_se__49C3F6B7 (dbo.Servicios)
+		/// </summary>
+		[Association(ThisKey="IdServicio", OtherKey="IdServicio", CanBeNull=false)]
+		public Servicio DetalleCoidse49C3F6B { get; set; }
+
+		/// <summary>
+		/// FK__DetalleCo__id_se__656C112C (dbo.Servicios)
+		/// </summary>
+		[Association(ThisKey="IdServicio", OtherKey="IdServicio", CanBeNull=false)]
+		public Servicio DetalleCoidse656C112C { get; set; }
 
 		#endregion
 	}
@@ -140,483 +263,156 @@ namespace DataModels
 	[Table(Schema="dbo", Name="Persona")]
 	public partial class Persona
 	{
-		[Column("idPersona"),      PrimaryKey, Identity] public int    IdPersona      { get; set; } // int
-		[Column("nombreCompleto"), NotNull             ] public string NombreCompleto { get; set; } // varchar(250)
-		[Column("email"),          NotNull             ] public string Email          { get; set; } // varchar(150)
-		[Column("clave"),          NotNull             ] public string Clave          { get; set; } // varchar(15)
-		[Column("esEmpleado"),     NotNull             ] public bool   EsEmpleado     { get; set; } // bit
-		[Column("estado"),         NotNull             ] public char   Estado         { get; set; } // varchar(1)
+		[Column("id_persona"),       PrimaryKey,  Identity] public int       IdPersona       { get; set; } // int
+		[Column("nombre"),           NotNull              ] public string    Nombre          { get; set; } // varchar(100)
+		[Column("apellido"),         NotNull              ] public string    Apellido        { get; set; } // varchar(100)
+		[Column("email"),            NotNull              ] public string    Email           { get; set; } // varchar(150)
+		[Column("telefono"),            Nullable          ] public string    Telefono        { get; set; } // varchar(15)
+		[Column("direccion"),           Nullable          ] public string    Direccion       { get; set; } // varchar(255)
+		[Column("fecha_nacimiento"),    Nullable          ] public DateTime? FechaNacimiento { get; set; } // date
+		[Column("contrasena"),          Nullable          ] public string    Contrasena      { get; set; } // varchar(255)
+		[Column("estado"),              Nullable          ] public bool?     Estado          { get; set; } // bit
+		[Column("tipo_persona"),        Nullable          ] public string    TipoPersona     { get; set; } // varchar(50)
+	}
+
+	[Table(Schema="dbo", Name="Servicios")]
+	public partial class Servicio
+	{
+		[Column("id_servicio"),  PrimaryKey,  Identity] public int     IdServicio  { get; set; } // int
+		[Column("nombre"),       NotNull              ] public string  Nombre      { get; set; } // varchar(100)
+		[Column("descripcion"),     Nullable          ] public string  Descripcion { get; set; } // text
+		[Column("precio"),       NotNull              ] public decimal Precio      { get; set; } // decimal(10, 2)
+		[Column("id_categoria"), NotNull              ] public int     IdCategoria { get; set; } // int
+		[Column("estado"),       NotNull              ] public bool    Estado      { get; set; } // bit
 
 		#region Associations
 
 		/// <summary>
-		/// FK_Bitacora_Persona_BackReference (dbo.Bitacora)
+		/// FK__DetalleCo__id_se__49C3F6B7_BackReference (dbo.DetalleCobro)
 		/// </summary>
-		[Association(ThisKey="IdPersona", OtherKey="IdPersona", CanBeNull=true)]
-		public IEnumerable<Bitacora> Bitacoras { get; set; }
+		[Association(ThisKey="IdServicio", OtherKey="IdServicio", CanBeNull=true)]
+		public IEnumerable<DetalleCobro> DetalleCoidse49C3F6B { get; set; }
 
 		/// <summary>
-		/// FK_Reservacion_Persona_BackReference (dbo.Reservacion)
+		/// FK__DetalleCo__id_se__656C112C_BackReference (dbo.DetalleCobro)
 		/// </summary>
-		[Association(ThisKey="IdPersona", OtherKey="IdPersona", CanBeNull=true)]
-		public IEnumerable<Reservacion> Reservacions { get; set; }
+		[Association(ThisKey="IdServicio", OtherKey="IdServicio", CanBeNull=true)]
+		public IEnumerable<DetalleCobro> DetalleCoidse656C112C { get; set; }
+
+		/// <summary>
+		/// FK__Servicios__id_ca__46E78A0C (dbo.Categorias)
+		/// </summary>
+		[Association(ThisKey="IdCategoria", OtherKey="IdCategoria", CanBeNull=false)]
+		public Categoria Idca46E78A0C { get; set; }
+
+		/// <summary>
+		/// FK__Servicios__id_ca__628FA481 (dbo.Categorias)
+		/// </summary>
+		[Association(ThisKey="IdCategoria", OtherKey="IdCategoria", CanBeNull=false)]
+		public Categoria Idca628FA { get; set; }
 
 		#endregion
 	}
 
-	[Table(Schema="dbo", Name="Reservacion")]
-	public partial class Reservacion
+	public static partial class PviProyectoFinalDBStoredProcedures
 	{
-		[Column("idReservacion"),        PrimaryKey,  Identity] public int       IdReservacion        { get; set; } // int
-		[Column("idPersona"),            NotNull              ] public int       IdPersona            { get; set; } // int
-		[Column("idHabitacion"),         NotNull              ] public int       IdHabitacion         { get; set; } // int
-		[Column("fechaEntrada"),         NotNull              ] public DateTime  FechaEntrada         { get; set; } // datetime
-		[Column("fechaSalida"),          NotNull              ] public DateTime  FechaSalida          { get; set; } // datetime
-		[Column("numeroAdultos"),        NotNull              ] public int       NumeroAdultos        { get; set; } // int
-		[Column("numeroNinhos"),         NotNull              ] public int       NumeroNinhos         { get; set; } // int
-		[Column("totalDiasReservacion"), NotNull              ] public int       TotalDiasReservacion { get; set; } // int
-		[Column("costoPorCadaAdulto"),   NotNull              ] public decimal   CostoPorCadaAdulto   { get; set; } // numeric(10, 2)
-		[Column("costoPorCadaNinho"),    NotNull              ] public decimal   CostoPorCadaNinho    { get; set; } // numeric(10, 2)
-		[Column("costoTotal"),           NotNull              ] public decimal   CostoTotal           { get; set; } // numeric(14, 2)
-		[Column("fechaCreacion"),        NotNull              ] public DateTime  FechaCreacion        { get; set; } // datetime
-		[Column("fechaModificacion"),       Nullable          ] public DateTime? FechaModificacion    { get; set; } // datetime
-		[Column("estado"),               NotNull              ] public char      Estado               { get; set; } // varchar(1)
+		#region SpActualizaPersona
 
-		#region Associations
-
-		/// <summary>
-		/// FK_Bitacora_Reservacion_BackReference (dbo.Bitacora)
-		/// </summary>
-		[Association(ThisKey="IdReservacion", OtherKey="IdReservacion", CanBeNull=true)]
-		public IEnumerable<Bitacora> Bitacoras { get; set; }
-
-		/// <summary>
-		/// FK_Reservacion_Habitacion (dbo.Habitacion)
-		/// </summary>
-		[Association(ThisKey="IdHabitacion", OtherKey="IdHabitacion", CanBeNull=false)]
-		public Habitacion Habitacion { get; set; }
-
-		/// <summary>
-		/// FK_Reservacion_Persona (dbo.Persona)
-		/// </summary>
-		[Association(ThisKey="IdPersona", OtherKey="IdPersona", CanBeNull=false)]
-		public Persona Persona { get; set; }
-
-		#endregion
-	}
-
-	public static partial class PvProyectoFinalDBStoredProcedures
-	{
-		#region EditarHabitacion
-
-		public static IEnumerable<EditarHabitacionResult> EditarHabitacion(this PvProyectoFinalDB dataConnection, int? @idHabitacion, string @numeroHabitacion, int? @capacidadMaxima, string @descripcion)
+		public static int SpActualizaPersona(this PviProyectoFinalDB dataConnection, int? @idPersona, string @nombre, string @apellido, string @email, string @telefono, string @direccion, DateTime? @fechaNacimiento, string @contrasena, bool? @estado, string @tipoPersona)
 		{
 			var parameters = new []
 			{
-				new DataParameter("@idHabitacion",     @idHabitacion,     LinqToDB.DataType.Int32),
-				new DataParameter("@numeroHabitacion", @numeroHabitacion, LinqToDB.DataType.NVarChar)
+				new DataParameter("@id_persona",       @idPersona,       LinqToDB.DataType.Int32),
+				new DataParameter("@nombre",           @nombre,          LinqToDB.DataType.VarChar)
 				{
-					Size = 10
+					Size = 100
 				},
-				new DataParameter("@capacidadMaxima",  @capacidadMaxima,  LinqToDB.DataType.Int32),
-				new DataParameter("@descripcion",      @descripcion,      LinqToDB.DataType.NVarChar)
+				new DataParameter("@apellido",         @apellido,        LinqToDB.DataType.VarChar)
 				{
-					Size = 500
-				}
-			};
-
-			return dataConnection.QueryProc<EditarHabitacionResult>("[dbo].[EditarHabitacion]", parameters);
-		}
-
-		public partial class EditarHabitacionResult
-		{
-			public string Mensaje { get; set; }
-		}
-
-		#endregion
-
-		#region EliminarHabitacion
-
-		public static int EliminarHabitacion(this PvProyectoFinalDB dataConnection, int? @HotelId, string @NumeroHabitacion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@HotelId",          @HotelId,          LinqToDB.DataType.Int32),
-				new DataParameter("@NumeroHabitacion", @NumeroHabitacion, LinqToDB.DataType.NVarChar)
-				{
-					Size = 50
-				}
-			};
-
-			return dataConnection.ExecuteProc("[dbo].[EliminarHabitacion]", parameters);
-		}
-
-		#endregion
-
-		#region InactivarHabitacion
-
-		public static IEnumerable<InactivarHabitacionResult> InactivarHabitacion(this PvProyectoFinalDB dataConnection, int? @idHabitacion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idHabitacion", @idHabitacion, LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<InactivarHabitacionResult>("[dbo].[InactivarHabitacion]", parameters);
-		}
-
-		public partial class InactivarHabitacionResult
-		{
-			public string Mensaje { get; set; }
-		}
-
-		#endregion
-
-		#region SpAutenticarUsuario
-
-		public static IEnumerable<Persona> SpAutenticarUsuario(this PvProyectoFinalDB dataConnection, string @email, string @clave)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@email", @email, LinqToDB.DataType.VarChar)
+					Size = 100
+				},
+				new DataParameter("@email",            @email,           LinqToDB.DataType.VarChar)
 				{
 					Size = 150
 				},
-				new DataParameter("@clave", @clave, LinqToDB.DataType.VarChar)
+				new DataParameter("@telefono",         @telefono,        LinqToDB.DataType.VarChar)
 				{
 					Size = 15
-				}
-			};
-
-			return dataConnection.QueryProc<Persona>("[dbo].[sp_Autenticar_Usuario]", parameters);
-		}
-
-		#endregion
-
-		#region SpCancelarReservacion
-
-		public static int SpCancelarReservacion(this PvProyectoFinalDB dataConnection, int? @idReservacion, int? @idPersona)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idReservacion", @idReservacion, LinqToDB.DataType.Int32),
-				new DataParameter("@idPersona",     @idPersona,     LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.ExecuteProc("[dbo].[sp_CancelarReservacion]", parameters);
-		}
-
-		#endregion
-
-		#region SpCargartodoslosHoteles
-
-		public static IEnumerable<SpCargartodoslosHotelesResult> SpCargartodoslosHoteles(this PvProyectoFinalDB dataConnection)
-		{
-			return dataConnection.QueryProc<SpCargartodoslosHotelesResult>("[dbo].[SpCargartodoslosHoteles]");
-		}
-
-		public partial class SpCargartodoslosHotelesResult
-		{
-			public string Nombre { get; set; }
-		}
-
-		#endregion
-
-		#region SpConsultarBitacora
-
-		public static IEnumerable<SpConsultarBitacoraResult> SpConsultarBitacora(this PvProyectoFinalDB dataConnection, int? @idReservacion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idReservacion", @idReservacion, LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<SpConsultarBitacoraResult>("[dbo].[sp_ConsultarBitacora]", parameters);
-		}
-
-		public partial class SpConsultarBitacoraResult
-		{
-			[Column("idBitacora")     ] public int      IdBitacora      { get; set; }
-			[Column("fechaDeLaAccion")] public DateTime FechaDeLaAccion { get; set; }
-			[Column("accionRealizada")] public string   AccionRealizada { get; set; }
-			[Column("nombreCompleto") ] public string   NombreCompleto  { get; set; }
-		}
-
-		#endregion
-
-		#region SpConsultarHabitaciones
-
-		public static IEnumerable<SpConsultarHabitacionesResult> SpConsultarHabitaciones(this PvProyectoFinalDB dataConnection, int? @IdHabitacion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@IdHabitacion", @IdHabitacion, LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<SpConsultarHabitacionesResult>("[dbo].[spConsultarHabitaciones]", parameters);
-		}
-
-		public partial class SpConsultarHabitacionesResult
-		{
-			public int    IdHabitacion     { get; set; }
-			public string Nombre           { get; set; }
-			public string NumeroHabitacion { get; set; }
-			public int    CapacidadMaxima  { get; set; }
-			public string Descripcion      { get; set; }
-			public char   Estado           { get; set; }
-		}
-
-		#endregion
-
-		#region SpConsultarHabitacionesPorId
-
-		public static IEnumerable<SpConsultarHabitacionesPorIdResult> SpConsultarHabitacionesPorId(this PvProyectoFinalDB dataConnection, int? @IdHotel, int? @CapacidadRequerida)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@IdHotel",            @IdHotel,            LinqToDB.DataType.Int32),
-				new DataParameter("@CapacidadRequerida", @CapacidadRequerida, LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<SpConsultarHabitacionesPorIdResult>("[dbo].[spConsultarHabitacionesPorId]", parameters);
-		}
-
-		public partial class SpConsultarHabitacionesPorIdResult
-		{
-			[Column("idHabitacion")      ] public int     IdHabitacion       { get; set; }
-			[Column("numeroHabitacion")  ] public string  NumeroHabitacion   { get; set; }
-			[Column("capacidadMaxima")   ] public int     CapacidadMaxima    { get; set; }
-			[Column("descripcion")       ] public string  Descripcion        { get; set; }
-			[Column("estado")            ] public char    Estado             { get; set; }
-			[Column("costoPorCadaAdulto")] public decimal CostoPorCadaAdulto { get; set; }
-			[Column("costoPorCadaNinho") ] public decimal CostoPorCadaNinho  { get; set; }
-		}
-
-		#endregion
-
-		#region SpConsultarHabitacionesPorNumeroHabitacion
-
-		public static IEnumerable<SpConsultarHabitacionesPorNumeroHabitacionResult> SpConsultarHabitacionesPorNumeroHabitacion(this PvProyectoFinalDB dataConnection, string @numeroHabitacion, int? @idHotel)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@numeroHabitacion", @numeroHabitacion, LinqToDB.DataType.VarChar)
-				{
-					Size = 10
 				},
-				new DataParameter("@idHotel",          @idHotel,          LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<SpConsultarHabitacionesPorNumeroHabitacionResult>("[dbo].[spConsultarHabitacionesPorNumeroHabitacion]", parameters);
-		}
-
-		public partial class SpConsultarHabitacionesPorNumeroHabitacionResult
-		{
-			[Column("numeroHabitacion")] public string NumeroHabitacion { get; set; }
-		}
-
-		#endregion
-
-		#region SpConsultarHotel
-
-		public static IEnumerable<Hotel> SpConsultarHotel(this PvProyectoFinalDB dataConnection)
-		{
-			return dataConnection.QueryProc<Hotel>("[dbo].[spConsultarHotel]");
-		}
-
-		#endregion
-
-		#region SpConsultarListaHabitaciones
-
-		public static IEnumerable<SpConsultarListaHabitacionesResult> SpConsultarListaHabitaciones(this PvProyectoFinalDB dataConnection)
-		{
-			return dataConnection.QueryProc<SpConsultarListaHabitacionesResult>("[dbo].[SpConsultarListaHabitaciones]");
-		}
-
-		public partial class SpConsultarListaHabitacionesResult
-		{
-			public int    ID               { get; set; }
-			public int    Hotel            { get; set; }
-			public string NumeroHabitacion { get; set; }
-			public int    CapacidadMaxima  { get; set; }
-			public string Estado           { get; set; }
-		}
-
-		#endregion
-
-		#region SpConsultarPersona
-
-		public static IEnumerable<Persona> SpConsultarPersona(this PvProyectoFinalDB dataConnection)
-		{
-			return dataConnection.QueryProc<Persona>("[dbo].[spConsultarPersona]");
-		}
-
-		#endregion
-
-		#region SpConsultarReservacion
-
-		public static IEnumerable<SpConsultarReservacionResult> SpConsultarReservacion(this PvProyectoFinalDB dataConnection, int? @idReservacion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idReservacion", @idReservacion, LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<SpConsultarReservacionResult>("[dbo].[sp_ConsultarReservacion]", parameters);
-		}
-
-		public partial class SpConsultarReservacionResult
-		{
-			[Column("idReservacion")       ] public int       IdReservacion        { get; set; }
-			[Column("idPersona")           ] public int       IdPersona            { get; set; }
-			[Column("idHotel")             ] public int       IdHotel              { get; set; }
-			[Column("nombre")              ] public string    Nombre               { get; set; }
-			[Column("numeroHabitacion")    ] public string    NumeroHabitacion     { get; set; }
-			[Column("capacidadMaxima")     ] public int       CapacidadMaxima      { get; set; }
-			[Column("nombreCompleto")      ] public string    NombreCompleto       { get; set; }
-			[Column("fechaEntrada")        ] public DateTime? FechaEntrada         { get; set; }
-			[Column("fechaSalida")         ] public DateTime? FechaSalida          { get; set; }
-			[Column("totalDiasReservacion")] public int       TotalDiasReservacion { get; set; }
-			[Column("numeroNinhos")        ] public int       NumeroNinhos         { get; set; }
-			[Column("numeroAdultos")       ] public int       NumeroAdultos        { get; set; }
-			[Column("costoTotal")          ] public decimal   CostoTotal           { get; set; }
-			[Column("estado")              ] public char      Estado               { get; set; }
-		}
-
-		#endregion
-
-		#region SpCrearBitacora
-
-		public static int SpCrearBitacora(this PvProyectoFinalDB dataConnection, int? @idPersona, string @accionRealizada)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idPersona",       @idPersona,       LinqToDB.DataType.Int32),
-				new DataParameter("@accionRealizada", @accionRealizada, LinqToDB.DataType.VarChar)
+				new DataParameter("@direccion",        @direccion,       LinqToDB.DataType.VarChar)
 				{
-					Size = 25
-				}
-			};
-
-			return dataConnection.ExecuteProc("[dbo].[spCrearBitacora]", parameters);
-		}
-
-		#endregion
-
-		#region SpCrearHabitacion
-
-		public static int SpCrearHabitacion(this PvProyectoFinalDB dataConnection, int? @HotelId, string @NumeroHabitacion, int? @CapacidadMaxima, string @Descripcion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@HotelId",          @HotelId,          LinqToDB.DataType.Int32),
-				new DataParameter("@NumeroHabitacion", @NumeroHabitacion, LinqToDB.DataType.NVarChar)
+					Size = 255
+				},
+				new DataParameter("@fecha_nacimiento", @fechaNacimiento, LinqToDB.DataType.Date),
+				new DataParameter("@contrasena",       @contrasena,      LinqToDB.DataType.VarChar)
+				{
+					Size = 255
+				},
+				new DataParameter("@estado",           @estado,          LinqToDB.DataType.Boolean),
+				new DataParameter("@tipo_persona",     @tipoPersona,     LinqToDB.DataType.VarChar)
 				{
 					Size = 50
+				}
+			};
+
+			return dataConnection.ExecuteProc("[dbo].[sp_ActualizaPersona]", parameters);
+		}
+
+		#endregion
+
+		#region SpActulizaCasa
+
+		public static int SpActulizaCasa(this PviProyectoFinalDB dataConnection, int? @idCasa, string @nombreCasa, decimal? @metrosCuadrados, int? @numeroHabitantes, int? @numeroHabitaciones, int? @numeroBanos, decimal? @precio, int? @idPersona, DateTime? @FechaConstruccion, bool? @estado)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@id_casa",             @idCasa,             LinqToDB.DataType.Int32),
+				new DataParameter("@nombre_casa",         @nombreCasa,         LinqToDB.DataType.Text)
+				{
+					Size = 2147483647
 				},
-				new DataParameter("@CapacidadMaxima",  @CapacidadMaxima,  LinqToDB.DataType.Int32),
-				new DataParameter("@Descripcion",      @Descripcion,      LinqToDB.DataType.NVarChar)
+				new DataParameter("@metros_cuadrados",    @metrosCuadrados,    LinqToDB.DataType.Decimal),
+				new DataParameter("@numero_habitantes",   @numeroHabitantes,   LinqToDB.DataType.Int32),
+				new DataParameter("@numero_habitaciones", @numeroHabitaciones, LinqToDB.DataType.Int32),
+				new DataParameter("@numero_banos",        @numeroBanos,        LinqToDB.DataType.Int32),
+				new DataParameter("@precio",              @precio,             LinqToDB.DataType.Decimal),
+				new DataParameter("@id_persona",          @idPersona,          LinqToDB.DataType.Int32),
+				new DataParameter("@Fecha_construccion",  @FechaConstruccion,  LinqToDB.DataType.Date),
+				new DataParameter("@estado",              @estado,             LinqToDB.DataType.Boolean)
+			};
+
+			return dataConnection.ExecuteProc("[dbo].[sp_ActulizaCasa]", parameters);
+		}
+
+		#endregion
+
+		#region SpValidarUsuario
+
+		public static IEnumerable<SpValidarUsuarioResult> SpValidarUsuario(this PviProyectoFinalDB dataConnection, string @Email, string @Contrasena)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@Email",      @Email,      LinqToDB.DataType.NVarChar)
 				{
-					Size = 500
+					Size = 150
+				},
+				new DataParameter("@Contrasena", @Contrasena, LinqToDB.DataType.NVarChar)
+				{
+					Size = 255
 				}
 			};
 
-			return dataConnection.ExecuteProc("[dbo].[SpCrearHabitacion]", parameters);
+			return dataConnection.QueryProc<SpValidarUsuarioResult>("[dbo].[sp_ValidarUsuario]", parameters);
 		}
 
-		#endregion
-
-		#region SpCrearReservacion
-
-		public static int SpCrearReservacion(this PvProyectoFinalDB dataConnection, int? @idPersona, int? @idHabitacion, DateTime? @fechaEntrada, DateTime? @fechaSalida, int? @numeroAdultos, int? @numeroNinhos, int? @totalDiasReservacion, decimal? @costoPorCadaAdulto, decimal? @costoPorCadaNinho, decimal? @costoTotal, DateTime? @fechaCreacion, char? @estado)
+		public partial class SpValidarUsuarioResult
 		{
-			var parameters = new []
-			{
-				new DataParameter("@idPersona",            @idPersona,            LinqToDB.DataType.Int32),
-				new DataParameter("@idHabitacion",         @idHabitacion,         LinqToDB.DataType.Int32),
-				new DataParameter("@fechaEntrada",         @fechaEntrada,         LinqToDB.DataType.DateTime),
-				new DataParameter("@fechaSalida",          @fechaSalida,          LinqToDB.DataType.DateTime),
-				new DataParameter("@numeroAdultos",        @numeroAdultos,        LinqToDB.DataType.Int32),
-				new DataParameter("@numeroNinhos",         @numeroNinhos,         LinqToDB.DataType.Int32),
-				new DataParameter("@totalDiasReservacion", @totalDiasReservacion, LinqToDB.DataType.Int32),
-				new DataParameter("@costoPorCadaAdulto",   @costoPorCadaAdulto,   LinqToDB.DataType.Decimal),
-				new DataParameter("@costoPorCadaNinho",    @costoPorCadaNinho,    LinqToDB.DataType.Decimal),
-				new DataParameter("@costoTotal",           @costoTotal,           LinqToDB.DataType.Decimal),
-				new DataParameter("@fechaCreacion",        @fechaCreacion,        LinqToDB.DataType.DateTime),
-				new DataParameter("@estado",               @estado,               LinqToDB.DataType.VarChar)
-				{
-					Size = 1
-				}
-			};
-
-			return dataConnection.ExecuteProc("[dbo].[spCrearReservacion]", parameters);
-		}
-
-		#endregion
-
-		#region SpGestionarReservaciones
-
-		public static IEnumerable<SpGestionarReservacionesResult> SpGestionarReservaciones(this PvProyectoFinalDB dataConnection)
-		{
-			return dataConnection.QueryProc<SpGestionarReservacionesResult>("[dbo].[sp_GestionarReservaciones]");
-		}
-
-		public partial class SpGestionarReservacionesResult
-		{
-			[Column("idReservacion") ] public int       IdReservacion  { get; set; }
-			[Column("nombreCompleto")] public string    NombreCompleto { get; set; }
-			[Column("nombre")        ] public string    Nombre         { get; set; }
-			[Column("fechaEntrada")  ] public DateTime? FechaEntrada   { get; set; }
-			[Column("fechaSalida")   ] public DateTime? FechaSalida    { get; set; }
-			[Column("costoTotal")    ] public decimal   CostoTotal     { get; set; }
-			[Column("estado")        ] public char      Estado         { get; set; }
-		}
-
-		#endregion
-
-		#region SpMisReservaciones
-
-		public static IEnumerable<SpMisReservacionesResult> SpMisReservaciones(this PvProyectoFinalDB dataConnection, int? @idPersona)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idPersona", @idPersona, LinqToDB.DataType.Int32)
-			};
-
-			return dataConnection.QueryProc<SpMisReservacionesResult>("[dbo].[sp_MisReservaciones]", parameters);
-		}
-
-		public partial class SpMisReservacionesResult
-		{
-			[Column("idReservacion")] public int       IdReservacion { get; set; }
-			[Column("nombre")       ] public string    Nombre        { get; set; }
-			[Column("fechaEntrada") ] public DateTime? FechaEntrada  { get; set; }
-			[Column("fechaSalida")  ] public DateTime? FechaSalida   { get; set; }
-			[Column("costoTotal")   ] public decimal   CostoTotal    { get; set; }
-			[Column("estado")       ] public char      Estado        { get; set; }
-		}
-
-		#endregion
-
-		#region SpModificarReservacion
-
-		public static int SpModificarReservacion(this PvProyectoFinalDB dataConnection, int? @idReservacion, DateTime? @fechaEntrada, DateTime? @fechaSalida, int? @numeroAdultos, int? @numeroNinhos, int? @totalDiasReservacion, decimal? @costoPorCadaAdulto, decimal? @costoPorCadaNinho, decimal? @costoTotal, DateTime? @fechaModificacion)
-		{
-			var parameters = new []
-			{
-				new DataParameter("@idReservacion",        @idReservacion,        LinqToDB.DataType.Int32),
-				new DataParameter("@fechaEntrada",         @fechaEntrada,         LinqToDB.DataType.DateTime),
-				new DataParameter("@fechaSalida",          @fechaSalida,          LinqToDB.DataType.DateTime),
-				new DataParameter("@numeroAdultos",        @numeroAdultos,        LinqToDB.DataType.Int32),
-				new DataParameter("@numeroNinhos",         @numeroNinhos,         LinqToDB.DataType.Int32),
-				new DataParameter("@totalDiasReservacion", @totalDiasReservacion, LinqToDB.DataType.Int32),
-				new DataParameter("@costoPorCadaAdulto",   @costoPorCadaAdulto,   LinqToDB.DataType.Decimal),
-				new DataParameter("@costoPorCadaNinho",    @costoPorCadaNinho,    LinqToDB.DataType.Decimal),
-				new DataParameter("@costoTotal",           @costoTotal,           LinqToDB.DataType.Decimal),
-				new DataParameter("@fechaModificacion",    @fechaModificacion,    LinqToDB.DataType.DateTime)
-			};
-
-			return dataConnection.ExecuteProc("[dbo].[spModificarReservacion]", parameters);
+			[Column("id_persona")  ] public int    Id_persona   { get; set; }
+			[Column("nombre")      ] public string Nombre       { get; set; }
+			[Column("apellido")    ] public string Apellido     { get; set; }
+			[Column("email")       ] public string Email        { get; set; }
+			[Column("estado")      ] public bool?  Estado       { get; set; }
+			[Column("tipo_persona")] public string Tipo_persona { get; set; }
 		}
 
 		#endregion
@@ -630,16 +426,29 @@ namespace DataModels
 				t.IdBitacora == IdBitacora);
 		}
 
-		public static Habitacion Find(this ITable<Habitacion> table, int IdHabitacion)
+		public static Casa Find(this ITable<Casa> table, int IdCasa)
 		{
 			return table.FirstOrDefault(t =>
-				t.IdHabitacion == IdHabitacion);
+				t.IdCasa == IdCasa);
 		}
 
-		public static Hotel Find(this ITable<Hotel> table, int IdHotel)
+		public static Categoria Find(this ITable<Categoria> table, int IdCategoria)
 		{
 			return table.FirstOrDefault(t =>
-				t.IdHotel == IdHotel);
+				t.IdCategoria == IdCategoria);
+		}
+
+		public static Cobro Find(this ITable<Cobro> table, int IdCobro)
+		{
+			return table.FirstOrDefault(t =>
+				t.IdCobro == IdCobro);
+		}
+
+		public static DetalleCobro Find(this ITable<DetalleCobro> table, int IdServicio, int IdCobro)
+		{
+			return table.FirstOrDefault(t =>
+				t.IdServicio == IdServicio &&
+				t.IdCobro    == IdCobro);
 		}
 
 		public static Persona Find(this ITable<Persona> table, int IdPersona)
@@ -648,10 +457,10 @@ namespace DataModels
 				t.IdPersona == IdPersona);
 		}
 
-		public static Reservacion Find(this ITable<Reservacion> table, int IdReservacion)
+		public static Servicio Find(this ITable<Servicio> table, int IdServicio)
 		{
 			return table.FirstOrDefault(t =>
-				t.IdReservacion == IdReservacion);
+				t.IdServicio == IdServicio);
 		}
 	}
 }
