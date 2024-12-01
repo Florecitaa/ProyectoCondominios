@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Casas";
+}
+//faltan las verificaciones 
+<h2>Casas</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Metros Cuadrados</th>
+            <th>Habitaciones</th>
+            <th>Baños</th>
+            <th>Propietario</th>
+            <th>Fecha Construcción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var casa in Model)
+        {
+            <tr>
+                <td>@casa.Nombre</td>
+                <td>@casa.MetrosCuadrados</td>
+                <td>@casa.NumeroHabitaciones</td>
+                <td>@casa.NumeroBanos</td>
+                <td>@casa.Propietario</td>
+                <td>@casa.FechaConstruccion.ToShortDateString()</td>
+                <td>@(casa.Estado ? "Activa" : "Inactiva")</td>
+                <td>
+                    @if (casa.Estado)
+                    {
+                        <a href="@Url.Action("Edit", "Casas", new { id = casa.Id })">Editar</a>
+                        <form method="post" action="@Url.Action("Inactivate", "Casas", new { id = casa.Id })">
+                            <button type="submit">Inactivar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
