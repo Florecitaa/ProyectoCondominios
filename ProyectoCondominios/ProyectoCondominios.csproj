@@ -256,6 +256,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controladores\CasasController.cs" />
     <Compile Include="Controladores\LogInController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Datamodels\MyDatabase1.generated.cs">
@@ -347,6 +348,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Casas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
