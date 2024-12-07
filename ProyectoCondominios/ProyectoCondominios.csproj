@@ -346,6 +346,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\LogIn\LogIn.cshtml" />
     <Content Include="Views\Casas\Casas.cshtml" />
+    <Content Include="Views\Casas\FormCrearcasa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewBag.Title = "FormCrearcasa";
+}
+
+<h2>Crear casa</h2>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Casas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Crear casas</h2>
+        <form id="crearCasaForm" method="post" action="/Casas/Guardar">
+            <div class="mb-3">
+                <label for="nombreCasa" class="form-label">Nombre de la casa</label>
+                <input type="text" class="form-control" id="nombreCasa" name="NombreCasa" maxlength="50" required>
+            </div>
+            <div class="mb-3">
+                <label for="metrosCuadrados" class="form-label">Metros cuadrados</label>
+                <input type="number" class="form-control" id="metrosCuadrados" name="MetrosCuadrados" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label for="numeroHabitaciones" class="form-label">Número de Habitaciones</label>
+                <input type="number" class="form-control" id="numeroHabitaciones" name="NumeroHabitaciones" min="1" max="8" required>
+            </div>
+            <div class="mb-3">
+                <label for="numeroBanos" class="form-label">Número de Baños</label>
+                <input type="number" class="form-control" id="numeroBanos" name="NumeroBanos" min="1" max="4" required>
+            </div>
+            <div class="mb-3">
+                <label for="idPersona" class="form-label">Cliente</label>
+                <select class="form-select" id="idPersona" name="IdPersona" required>
+                    <option value="">Seleccione un cliente</option>
+                    <% foreach (var persona in ViewBag.Personas) { %>
+                    <option value="<%= persona.Id %>"><%= persona.Nombre %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="fechaConstruccion" class="form-label">Fecha Construcción</label>
+                <input type="date" class="form-control" id="fechaConstruccion" name="FechaConstruccion" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="/Casas/Lista" class="btn btn-secondary">Regresar</a>
+        </form>
+    </div>
+    @*Validaciones*@
+    <script>
+        $(document).ready(function () {
+            $("#crearCasaForm").validate({
+                rules: {
+                    NombreCasa: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    MetrosCuadrados: {
+                        required: true,
+                        number: true
+                    },
+                    NumeroHabitaciones: {
+                        required: true,
+                        number: true,
+                        min: 1,
+                        max: 8
+                    },
+                    NumeroBanos: {
+                        required: true,
+                        number: true,
+                        min: 1,
+                        max: 4
+                    },
+                    IdPersona: {
+                        required: true
+                    },
+                    FechaConstruccion: {
+                        required: true,
+                        date: true
+                    }
+                },
+                messages: {
+                    NombreCasa: {
+                        required: "Por favor ingrese el nombre de la casa.",
+                        maxlength: "El nombre no puede exceder 50 caracteres."
+                    },
+                    MetrosCuadrados: {
+                        required: "Por favor ingrese los metros cuadrados.",
+                        number: "Debe ingresar un valor numérico."
+                    },
+                    NumeroHabitaciones: {
+                        required: "Por favor ingrese el número de habitaciones.",
+                        number: "Debe ingresar un número entero.",
+                        min: "El valor debe ser mayor o igual a 1.",
+                        max: "El valor debe ser menor o igual a 8."
+                    },
+                    NumeroBanos: {
+                        required: "Por favor ingrese el número de baños.",
+                        number: "Debe ingresar un número entero.",
+                        min: "El valor debe ser mayor o igual a 1.",
+                        max: "El valor debe ser menor o igual a 4."
+                    },
+                    IdPersona: {
+                        required: "Por favor seleccione un cliente."
+                    },
+                    FechaConstruccion: {
+                        required: "Por favor ingrese una fecha de construcción.",
+                        date: "Debe ingresar una fecha válida."
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
