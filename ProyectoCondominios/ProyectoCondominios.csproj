@@ -269,6 +269,7 @@
     </Compile>
     <Compile Include="Models\Casa.cs" />
     <Compile Include="Models\Persona.cs" />
+    <Compile Include="Models\Servicio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
