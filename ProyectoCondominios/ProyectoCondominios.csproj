@@ -368,6 +368,7 @@
     <Content Include="Views\Casas\Casas.cshtml" />
     <Content Include="Views\Casas\FormCrearcasa.cshtml" />
     <Content Include="Views\Servicios\Gestionarservicios.cshtml" />
+    <Content Include="Views\Servicios\FormServicios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
