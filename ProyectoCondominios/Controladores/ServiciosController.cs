@@ -59,12 +59,12 @@ namespace ProyectoCondominios.Controladores
         {
             if (ModelState.IsValid)
             {
-                var servicioExistente = Servicios.FirstOrDefault(s => s.Id == servicio.Id);
+                var servicioExistente = Servicios.FirstOrDefault(s => s.IdServicio == servicio.IdServicio);
                 if (servicioExistente != null)
                 {
                     servicioExistente.Nombre = servicio.Nombre;
                     servicioExistente.Precio = servicio.Precio;
-                    servicioExistente.Categoria = servicio.IdCategoria;
+                    servicioExistente.IdCategoria = servicio.IdCategoria;
                     servicioExistente.Estado = servicio.Estado;
                     return (IActionResult)RedirectToAction("Index");
                 }

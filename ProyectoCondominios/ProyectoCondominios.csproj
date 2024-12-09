@@ -367,10 +367,10 @@
     <Content Include="Views\LogIn\LogIn.cshtml" />
     <Content Include="Views\Casas\Casas.cshtml" />
     <Content Include="Views\Casas\FormCrearcasa.cshtml" />
+    <Content Include="Views\Servicios\Gestionarservicios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Servicios\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
