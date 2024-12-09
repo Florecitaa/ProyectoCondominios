@@ -1,0 +1,26 @@
+﻿@model Proyecto.Models.Cobros
+@{
+    ViewBag.Title = "CrearCobro";
+}
+
+<h2>CrearCobro</h2>
+
+<div class="mb-3">
+    <label class="form-label" for="Cliente">Cliente:</label>
+    @Html.DropDownListFor(model => model.Nombre, new SelectList(ViewBag.Nombre, "Nombre", "Nombre"), "Seleccione una opcion", new { @class = "form-action" })
+</div>
+
+<div class="mb-3">
+    <label class="form-label" for="Nombre_casa">Casa:</label>
+    @Html.DropDownListFor(model => model.Nombre_casa, new SelectList(ViewBag.Nombre_casa, "Nombre_casa", "Nombre"), "Seleccione una opcion", new { @class = "form-action" })
+</div>
+
+<div class="mb-3">
+    <label class="form-label" for="anio">Año:</label>
+    @Html.DropDownListFor(model => model.fecha, new SelectList(ViewBag.anio, "anio", "Nombre"), "Seleccione una opcion", new { @class = "form-action" })
+</div>
+
+<div class="mb-3">
+    <label class="form-label" for="mes">Mes:</label>
+    @Html.DropDownListFor(model => model.fecha, new SelectList(ViewBag.mes, "mes", "Nombre"), "Seleccione una opcion", new { @class = "form-action" })
+</div>
